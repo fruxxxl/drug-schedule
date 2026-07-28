@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Конструктор таблицы лекарств</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ======================= ФОРМА ======================= -->
+  <aside class="form-panel" id="formPanel">
+    <h1>Конструктор таблицы лекарств</h1>
+
+    <fieldset>
+      <legend>Период</legend>
+      <label>С <input type="date" id="startDate"></label>
+      <label>Длительность
+        <select id="duration">
+          <option value="1">1 месяц</option>
+          <option value="2" selected>2 месяца</option>
+          <option value="3">3 месяца</option>
+          <option value="4">4 месяца</option>
+        </select>
+      </label>
+      <label>Разбивка
+        <select id="splitMode">
+          <option value="30" selected>По месяцу (~30 дн.)</option>
+          <option value="14">По 2 недели</option>
+          <option value="7">По неделе</option>
+          <option value="0">Без разбивки</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Лекарства</legend>
+      <div id="medList"></div>
+      <button type="button" id="addMed" class="btn-add">+ Добавить лекарство</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>Настройки листа</legend>
+      <label>Ориентация
+        <select id="orientation">
+          <option value="landscape" selected>Альбомная</option>
+          <option value="portrait">Книжная</option>
+        </select>
+      </label>
+      <label>Пустые строки
+        <select id="customRows">
+          <option value="0">Нет</option>
+          <option value="1">1 строка</option>
+          <option value="2" selected>2 строки</option>
+          <option value="3">3 строки</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>История изменений</legend>
+      <div id="historyList"></div>
+      <div class="preset-io">
+        <button type="button" id="exportBtn" class="btn-tiny">Выгрузить в файл</button>
+        <button type="button" id="importBtn" class="btn-tiny">Загрузить из файла</button>
+        <input type="file" id="importFile" accept=".json" style="display:none">
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" id="printBtn" class="btn-primary">Печать</button>
+      <button type="button" id="downloadBtn" class="btn-secondary">Скачать HTML</button>
+      <button type="button" id="resetBtn" class="btn-danger">Сбросить</button>
+    </div>
+  </aside>
+
+  <!-- ======================= DIVIDER ======================= -->
+  <div class="panel-divider" id="panelDivider">
+    <div class="divider-grip"></div>
+  </div>
+
+  <!-- ======================= ПРЕВЬЮ ======================= -->
+  <main class="preview-panel" id="previewScroll">
+    <div class="preview-toolbar">
+      <span>Превью</span>
+      <label class="zoom-label">Масштаб
+        <input type="range" id="zoom" min="30" max="100" value="70">
+      </label>
+    </div>
+    <div id="preview"></div>
+  </main>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
