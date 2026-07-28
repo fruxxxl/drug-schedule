@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Таблица приема лекарств</title>
+<style>
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #111;
+    background: #fff;
+    padding: 20px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 18px;
+  }
+
+  .week-label {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    padding-left: 4px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  th, td {
+    border: 1.5px solid #333;
+    padding: 5px 6px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  th {
+    background: #e8e8e8;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 7px 6px;
+  }
+
+  .med-name {
+    text-align: left;
+    font-size: 14px;
+    white-space: nowrap;
+    padding-left: 8px;
+    width: 150px;
+  }
+
+  .dose {
+    text-align: center;
+    font-size: 13px;
+    color: #333;
+    width: 140px;
+  }
+
+  .day-col {
+    width: 36px;
+  }
+
+  .day-col input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #2a7d2a;
+  }
+
+  .section-morning {
+    border-left: 4px solid #f0a030;
+    padding-left: 10px;
+    margin-bottom: 20px;
+  }
+
+  .section-evening {
+    border-left: 4px solid #4060c0;
+    padding-left: 10px;
+    margin-bottom: 20px;
+  }
+
+  .time-badge {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px 14px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .time-badge.morning {
+    background: #fff3d6;
+    border: 1.5px solid #f0a030;
+    color: #b07000;
+  }
+
+  .time-badge.evening {
+    background: #dde4f7;
+    border: 1.5px solid #4060c0;
+    color: #2a3a80;
+  }
+
+  .note {
+    font-size: 11px;
+    color: #777;
+    text-align: center;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .note-box {
+    margin-top: 20px;
+    border: 1.5px solid #999;
+    border-radius: 6px;
+    padding: 12px;
+    min-height: 50px;
+  }
+
+  .note-box-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .legend {
+    font-size: 12px;
+    color: #555;
+    margin-top: 6px;
+    padding-left: 4px;
+  }
+
+  .permanent {
+    display: inline-block;
+    background: #e0f0e0;
+    color: #2a6a2a;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+
+  .temp {
+    display: inline-block;
+    background: #fff0e0;
+    color: #b07000;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    margin-top: 24px;
+  }
+
+  @media print {
+    body {
+      padding: 0;
+    }
+    .no-print {
+      display: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>Таблица приема лекарств</h1>
+<div class="subtitle">Поставьте галочку (✓), когда приняли лекарство</div>
+
+<!-- ============ УТРО ============ -->
+<div class="section-morning">
+  <span class="time-badge morning">☀ УТРО</span>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="med-name">Лекарство</th>
+        <th>Доза</th>
+        <th class="day-col">Пн</th>
+        <th class="day-col">Вт</th>
+        <th class="day-col">Ср</th>
+        <th class="day-col">Чт</th>
+        <th class="day-col">Пт</th>
+        <th class="day-col">Сб</th>
+        <th class="day-col">Вс</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="med-name">Телмиста Н <span class="permanent">постоянно</span></td>
+        <td class="dose">½ таблетки</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Изоптин <span class="permanent">постоянно</span></td>
+        <td class="dose">¼ таблетки</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Зинакорен <span class="permanent">постоянно</span></td>
+        <td class="dose">1 таблетка</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Предуктал <span class="temp">2 мес</span></td>
+        <td class="dose">1 табл.<br><small>(во время еды)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Коэнзим Q10 <span class="temp">1 мес</span></td>
+        <td class="dose">20 капель<br><small>(после еды)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ ВЕЧЕР ============ -->
+<div class="section-evening">
+  <span class="time-badge evening">🌙 ВЕЧЕР</span>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="med-name">Лекарство</th>
+        <th>Доза</th>
+        <th class="day-col">Пн</th>
+        <th class="day-col">Вт</th>
+        <th class="day-col">Ср</th>
+        <th class="day-col">Чт</th>
+        <th class="day-col">Пт</th>
+        <th class="day-col">Сб</th>
+        <th class="day-col">Вс</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="med-name">Росера <span class="permanent">постоянно</span></td>
+        <td class="dose">1 таблетка<br><small>(после ужина)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ НЕДЕЛЯ 2 ============ -->
+
+<h1 style="margin-top:30px; font-size:18px;">Неделя 2</h1>
+
+<div class="section-morning">
+  <span class="time-badge morning">☀ УТРО</span>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="med-name">Лекарство</th>
+        <th>Доза</th>
+        <th class="day-col">Пн</th>
+        <th class="day-col">Вт</th>
+        <th class="day-col">Ср</th>
+        <th class="day-col">Чт</th>
+        <th class="day-col">Пт</th>
+        <th class="day-col">Сб</th>
+        <th class="day-col">Вс</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="med-name">Телмиста Н <span class="permanent">постоянно</span></td>
+        <td class="dose">½ таблетки</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Изоптин <span class="permanent">постоянно</span></td>
+        <td class="dose">¼ таблетки</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Зинакорен <span class="permanent">постоянно</span></td>
+        <td class="dose">1 таблетка</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Предуктал <span class="temp">2 мес</span></td>
+        <td class="dose">1 табл.<br><small>(во время еды)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Коэнзим Q10 <span class="temp">1 мес</span></td>
+        <td class="dose">20 капель<br><small>(после еды)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-evening">
+  <span class="time-badge evening">🌙 ВЕЧЕР</span>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="med-name">Лекарство</th>
+        <th>Доза</th>
+        <th class="day-col">Пн</th>
+        <th class="day-col">Вт</th>
+        <th class="day-col">Ср</th>
+        <th class="day-col">Чт</th>
+        <th class="day-col">Пт</th>
+        <th class="day-col">Сб</th>
+        <th class="day-col">Вс</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="med-name">Росера <span class="permanent">постоянно</span></td>
+        <td class="dose">1 таблетка<br><small>(после ужина)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ НЕДЕЛЯ 3 ============ -->
+
+<h1 style="margin-top:30px; font-size:18px;">Неделя 3</h1>
+
+<div class="section-morning">
+  <span class="time-badge morning">☀ УТРО</span>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="med-name">Лекарство</th>
+        <th>Доза</th>
+        <th class="day-col">Пн</th>
+        <th class="day-col">Вт</th>
+        <th class="day-col">Ср</th>
+        <th class="day-col">Чт</th>
+        <th class="day-col">Пт</th>
+        <th class="day-col">Сб</th>
+        <th class="day-col">Вс</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="med-name">Телмиста Н <span class="permanent">постоянно</span></td>
+        <td class="dose">½ таблетки</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Изоптин <span class="permanent">постоянно</span></td>
+        <td class="dose">¼ таблетки</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Зинакорен <span class="permanent">постоянно</span></td>
+        <td class="dose">1 таблетка</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Предуктал <span class="temp">2 мес</span></td>
+        <td class="dose">1 табл.<br><small>(во время еды)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name" style="color:#bbb; text-decoration:line-through;">Коэнзим Q10 <span class="temp">завершен</span></td>
+        <td class="dose" style="color:#bbb;">20 капель<br><small>(после еды)</small></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-evening">
+  <span class="time-badge evening">🌙 ВЕЧЕР</span>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="med-name">Лекарство</th>
+        <th>Доза</th>
+        <th class="day-col">Пн</th>
+        <th class="day-col">Вт</th>
+        <th class="day-col">Ср</th>
+        <th class="day-col">Чт</th>
+        <th class="day-col">Пт</th>
+        <th class="day-col">Сб</th>
+        <th class="day-col">Вс</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="med-name">Росера <span class="permanent">постоянно</span></td>
+        <td class="dose">1 таблетка<br><small>(после ужина)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ НЕДЕЛЯ 4 ============ -->
+
+<h1 style="margin-top:30px; font-size:18px;">Неделя 4</h1>
+
+<div class="section-morning">
+  <span class="time-badge morning">☀ УТРО</span>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="med-name">Лекарство</th>
+        <th>Доза</th>
+        <th class="day-col">Пн</th>
+        <th class="day-col">Вт</th>
+        <th class="day-col">Ср</th>
+        <th class="day-col">Чт</th>
+        <th class="day-col">Пт</th>
+        <th class="day-col">Сб</th>
+        <th class="day-col">Вс</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="med-name">Телмиста Н <span class="permanent">постоянно</span></td>
+        <td class="dose">½ таблетки</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Изоптин <span class="permanent">постоянно</span></td>
+        <td class="dose">¼ таблетки</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Зинакорен <span class="permanent">постоянно</span></td>
+        <td class="dose">1 таблетка</td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name">Предуктал <span class="temp">2 мес</span></td>
+        <td class="dose">1 табл.<br><small>(во время еды)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td class="med-name" style="color:#bbb; text-decoration:line-through;">Коэнзим Q10 <span class="temp">завершен</span></td>
+        <td class="dose" style="color:#bbb;">20 капель<br><small>(после еды)</small></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+        <td class="day-col" style="background:#f5f5f5;"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-evening">
+  <span class="time-badge evening">🌙 ВЕЧЕР</span>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="med-name">Лекарство</th>
+        <th>Доза</th>
+        <th class="day-col">Пн</th>
+        <th class="day-col">Вт</th>
+        <th class="day-col">Ср</th>
+        <th class="day-col">Чт</th>
+        <th class="day-col">Пт</th>
+        <th class="day-col">Сб</th>
+        <th class="day-col">Вс</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="med-name">Росера <span class="permanent">постоянно</span></td>
+        <td class="dose">1 таблетка<br><small>(после ужина)</small></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+        <td class="day-col"><input type="checkbox"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="legend">
+  <span class="permanent">постоянно</span> — принимать пожизненно &nbsp;&nbsp;
+  <span class="temp">2 мес / 1 мес</span> — временный курс
+</div>
+
+<div class="note-box">
+  <div class="note-box-title">Заметки:</div>
+  <br>
+</div>
+
+<div class="footer">Дата печати: ______________</div>
+
+</body>
+</html>

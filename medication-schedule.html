@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Таблица приема лекарств</title>
+<style>
+@page{size:A4 landscape;margin:5mm}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;font-size:14pt;color:#111;padding:3mm}
+h1{font-size:22pt;text-align:center;margin-bottom:1mm}
+.sub{text-align:center;font-size:12pt;color:#555;margin-bottom:2mm}
+.page{page-break-after:always;padding-bottom:3mm}
+.page:last-child{page-break-after:auto}
+.month-title{text-align:center;font-size:16pt;font-weight:bold;margin:2mm 0 3mm;color:#333}
+table{width:100%;border-collapse:collapse;table-layout:fixed;margin-bottom:2mm}
+th,td{border:.5pt solid #999;text-align:center;padding:0;vertical-align:middle}
+.nc{text-align:left;padding:2mm 3mm;font-size:18pt;white-space:nowrap;width:66mm;font-weight:bold;line-height:1.3}
+.nc small{font-weight:normal;font-size:12pt;color:#555}
+.dh{background:#e2e2e2;font-size:13pt;font-weight:bold;border-bottom:.7pt solid #444;height:11mm}
+.sh{font-size:15pt;font-weight:bold;height:10mm;letter-spacing:.5px}
+.sh.m{background:#fff3d6;color:#b07000;border-bottom:.7pt solid #e8c070}
+.sh.e{background:#dce5f7;color:#2a3a80;border-bottom:.7pt solid #8aa0d0}
+.sh.c{background:#f0f0f0;color:#666;border-bottom:.7pt solid #aaa}
+.mr{height:11mm}
+.mr.m{background:#fffdf7}
+.mr.e{background:#f3f6ff}
+.dc{height:11mm;position:relative;border:none}
+.dc .cb{display:block;width:7mm;height:7mm;border:1pt solid #555;border-radius:1mm;margin:0 auto}
+.we{border-right:1.2pt solid #555}
+.p{background:#dceedd;color:#2a6a2a;padding:.5mm 2.5mm;border-radius:.5mm;font-weight:normal;font-size:10pt}
+.t{background:#ffe8cc;color:#a06000;padding:.5mm 2.5mm;border-radius:.5mm;font-weight:normal;font-size:10pt}
+.legend{font-size:11pt;color:#555;margin-top:2mm}
+.notes{margin-top:2mm;border:.5pt solid #999;border-radius:1mm;padding:2mm;min-height:16mm;font-size:11pt}
+.notes b{font-size:12pt}
+.pb{text-align:center;margin-top:3mm}
+.pb button{padding:2mm 10mm;font-size:12pt;cursor:pointer;border:1px solid #999;border-radius:3mm;background:#f5f5f5}
+.pb button:hover{background:#e0e0e0}
+@media print{body{padding:0}.pb{display:none}}
+</style>
+</head>
+<body>
+<h1>Таблица приема лекарств</h1>
+<p class="sub">Отмечайте галочкой каждый прием</p>
+<div class="page">
+  <p class="month-title">28 июля &mdash; 27 августа 2026 г.</p>
+  <table id="t1"></table>
+  <p class="legend"><span class="p">постоянно</span> &mdash; пожизненно</p>
+</div>
+<div class="page">
+  <p class="month-title">28 августа &mdash; 27 сентября 2026 г.</p>
+  <table id="t2"></table>
+  <p class="legend"><span class="p">постоянно</span> &mdash; пожизненно</p>
+</div>
+<div class="pb"><button onclick="window.print()">Печать</button></div>
+<script>
+(function(){
+var M=[
+{n:'Телмиста Н',d:'\u00BD табл.',tg:'постоянно',tc:'p',t:'m',from:null,until:null},
+{n:'Изоптин',d:'\u00BC табл.',tg:'постоянно',tc:'p',t:'m',from:null,until:null},
+{n:'Зинакорен',d:'1 табл.',tg:'постоянно',tc:'p',t:'m',from:null,until:null},
+{n:'Коэнзим Q10',d:'20 кап. в \u00BD ст. воды (после еды)',tg:'1 авг \u2013 1 сен',tc:'t',t:'m',from:4,until:35},
+{n:'Предуктал ОД 80мг',d:'1 табл. (во время еды)',tg:'с 21 сен до 19 ноя',tc:'t',t:'m',from:55,until:null},
+{n:'Росера',d:'1 табл. (после ужина)',tg:'постоянно',tc:'p',t:'e',from:null,until:null}
+];
+function build(id,meds,offset,days){
+var dn=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+var h='<colgroup><col style="width:66mm">';
+for(var i=0;i<days;i++)h+='<col>';
+h+='</colgroup>';
+h+='<tr><th class="dh">Лекарство / Доза</th>';
+for(var i=0;i<days;i++){var d=new Date(2026,6,28);d.setDate(d.getDate()+offset+i);h+='<th class="dh'+(i>0&&i%7===6&&i<days-1?' we':'')+'">'+d.getDate()+'<br><span style="font-weight:normal;font-size:9pt;color:#777">'+dn[d.getDay()]+'</span></th>';}
+h+='</tr>';
+h+='<tr><th class="sh m" colspan="'+(days+1)+'">&#9728; УТРО</th></tr>';
+meds.filter(function(m){return m.t==='m'}).forEach(function(med){
+h+='<tr class="mr m"><td class="nc">'+med.n+' <span class="'+med.tc+'">'+med.tg+'</span><br><small>'+med.d+'</small></td>';
+for(var i=0;i<days;i++){var gi=offset+i;var show=med.from!==null?(gi>=med.from):true;var show2=med.until!==null?(gi<=med.until):true;if(show&&show2){h+='<td class="dc'+(i>0&&i%7===6&&i<days-1?' we':'')+'"><span class="cb"></span></td>';}else{h+='<td class="dc'+(i>0&&i%7===6&&i<days-1?' we':'')+'" style="border:none"></td>';}}
+h+='</tr>';
+});
+h+='<tr><th class="sh c" colspan="'+(days+1)+'">&#9998; ДРУГОЕ (утро)</th></tr>';
+h+='<tr class="mr m"><td class="nc">&nbsp;</td>';
+for(var i=0;i<days;i++){h+='<td class="dc'+(i>0&&i%7===6&&i<days-1?' we':'')+'"><span class="cb"></span></td>';}
+h+='</tr>';
+h+='<tr><th class="sh e" colspan="'+(days+1)+'">&#9790; ВЕЧЕР</th></tr>';
+meds.filter(function(m){return m.t==='e'}).forEach(function(med){
+h+='<tr class="mr e"><td class="nc">'+med.n+' <span class="'+med.tc+'">'+med.tg+'</span><br><small>'+med.d+'</small></td>';
+for(var i=0;i<days;i++){h+='<td class="dc'+(i>0&&i%7===6&&i<days-1?' we':'')+'"><span class="cb"></span></td>';}
+h+='</tr>';
+});
+h+='<tr><th class="sh c" colspan="'+(days+1)+'">&#9998; ДРУГОЕ (вечер)</th></tr>';
+h+='<tr class="mr e"><td class="nc">&nbsp;</td>';
+for(var i=0;i<days;i++){h+='<td class="dc'+(i>0&&i%7===6&&i<days-1?' we':'')+'"><span class="cb"></span></td>';}
+h+='</tr>';
+document.getElementById(id).innerHTML=h;
+}
+build('t1',M,0,31);
+build('t2',M,31,31);
+})();
+</script>
+</body>
+</html>
