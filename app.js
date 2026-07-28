@@ -388,7 +388,7 @@ function emptyRowHTML(days, timeClass){
 function fmtShort(dateStr){
   var d = parseDate(dateStr);
   if(!d) return '';
-  var m = ['','янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  var m = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
   return d.getDate() + ' ' + m[d.getMonth()];
 }
 
